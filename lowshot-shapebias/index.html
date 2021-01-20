@@ -1,10 +1,120 @@
 <!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+      <link rel="stylesheet" href="styles.css">
+      <meta charset="UTF-8">
+      <meta name="keywords" content="3D Shape learning">
+      <meta name="author" content="Stefan Stojanov, Anh Thai">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+ 
+<div class="header">
+  <h1>Using Shape to Categorize: Low-Shot Learning with an Explicit Shape Bias</h1>
+  <p class="authors">
+        <a href="https://stefanstojanov.com/">Stefan Stojanov</a>,
+        <a href="https://anhthai1997.wordpress.com/">Anh Thai</a>,
+        <a href="https://rehg.org/">James M. Rehg</a>
+  </p>
+  <p class="institution">
+        Georgia Institute of Technology
+  </p>
+</div>     
 
-<html>
-    <head>
-        <title>Low-Shot Learning with Shape Bias</title>
-    </head>
-    <body>
-        <p>This page will be updated once the draft is live on arxiv.</p>
-    </body>
-</html>
+<div class="links">
+
+    <div class="gallery">
+      <a target="_blank" href="https://github.com/devlearning-gt/3DShapeGen">
+	<img src="img/code_img.png" alt="code"> 
+      </a>
+      <div class="desc">Code + Data</div>
+    </div>
+    
+    <div class="gallery">
+      <a target="_blank" href="https://arxiv.org/abs/2101.07296">
+	<img src="img/paper_img.png" alt="arxiv link">
+      </a>
+      <div class="desc">Paper</div>
+    </div>
+
+</div>
+
+<div class="content">
+
+
+<!-- summary overview text here -->
+
+<p>The most powerful object recognition systems today do not explicitly make use of object shape during learning. This is despite the widely accepted importance of object shape for recognition, and the evidence for a shape-bias during rapid category learning in both young children and adults. In this work, motivated by recent developments in low-shot learning, findings in developmental psychology, and the increased use of synthetic data in computer vision research, we propose an approach that sucessfully utilizes 3D shape to improve low-shot learning methods' generalization performance to novel classes on multiple datasets. We also develop Toys4K, a new 3D object dataset with the biggest number of object categories that can also support low-shot learning. </p>
+
+<h1> Learning an Explicit Shape Bias </h1>
+
+<center><img class="default" src="img/basic_overview.png" ></center>
+<div class="desc_default"> First, we learn a discriminative shape embedding space from point clouds and extract featurefrom the training set. We then train an image encoder to map images to the learned shape features. If trained successfuly, the image encoder will have the same discriminative properties as the point cloud encoder.</div>
+
+<p>Our main motivation comes from the fact that 3D shape in the form of point clouds allows for better low-shot generalization than images. We aim to utilize this shape-based embedding space by learning how to map images to it. This task is challenging because the image to shape embedding space can only be learned using data from the training classes, but must sucessfuly extrapolate to the novel test classes. To learn this mapping, we optimize the image encoder with respect to two losses: (1) to minimize the distance between image and point cloud embedding pairs, (2) maintain identical pairwise distances between image embeddings and the point cloud embeddings. </p>
+
+<h1> Shape Information During the Low-Shot Phase </h1>
+<center><img class="medium" src="img/inference_overview.png" ></center>
+<div class="desc_medium"> (a) The standard setting: Prototypes are formed from images. (b) Our novel shape-biased setting: Image and shape embeddings are averaged. In both cases, the image-only queries can be classified by identifying the closest prototype. </div>
+
+<p>During the low-shot phase, we allow access to object point clouds and images for the shots, and  <i>only images</i> for the testing queries. Providing access to shape information at this stage allows for higher quality class prototypes.</p>
+
+<h1> Toys4K Dataset </h1>
+<center><img class="default" src="img/dataset_img.png" ></center>
+<div class="desc_default"> An overview of the objects in Toys4K, our novel dataset of high quality 3D assets for low-shot object learning using object appearance and shape information.</div>
+
+<p>Prior datasets that contain both 2D and 3D information such as ModelNet <a href="#modelnet">[1]</a> and ShapeNet <a href="#shapenet">[2]</a> have a limited total number of categories and do not focus on covering objects experience by children during development. Our proposed dataset, Toys4K consists of 4,179 object instances in 105 categories, with an average of 35 instances per category. Toys4K is developmentally relevant: The count noun vocabulary size of children, measured using MCDI<a href="#MCDI">[3]</a> forms has been found to average of 97 count nouns at 21 months. In Toys4K, 60% of the categories overlap with object nouns that children get tested for in MCDIs.</p>
+
+
+<h1> Results </h1>
+
+
+<center><img class="default" src="img/modelnet_results.png" ></center>
+<div class="desc_default"> Results on image-only and shape-biased low-shot recognition on ModelNet. Parenthesis show confidence intervals based on 5K low-shot episodes</div>
+
+
+<center><img class="default" src="img/shapenet_results.png" ></center>
+<div class="desc_default"> Results on image-only and shape-biased low-shot recognition on ShapeNet. Parenthesis show confidence intervals based on 5K low-shot episodes</div>
+
+
+<center><img class="default" src="img/toys_results.png" ></center>
+<div class="desc_default"> Results on image-only and shape-biased low-shot recognition on Toys4K. Parenthesis show confidence intervals based on 5K low-shot episodes</div>
+
+<p>We investigate the benefit of an explicit shape bias by adding it to SOTA low-shot learning methods SimpleShot <a href="#simpleshot">[3]</a> and FEAT <a href="#feat">[4]</a> on low-shot training splits for both ShapeNet, ModelNet and Toys4K. We demonstrate that an explicit shape bias results in significant improvements in one-shot learning performance, and results in improved performance relative to multiple image-only baseline algorithms.</p>
+
+<h1> Citation  </h1>
+<p>Bibliography information of this work:</p>
+<p>
+Stefan Stojanov, Anh Thai, James M. Rehg 2020. Using Shape to Categorize: Low-Shot Learning with an Explicit Shape Bias <cite>arXiv:2101.07296 (2021).</cite>
+</p>
+
+
+<pre>
+@article{stojanov2020lssb,
+      title={Using Shape to Categorize: Low-Shot Learning with an Explicit Shape Bias},
+      author={Stefan Stojanov and Anh Thai and James M. Rehg},
+      year={2021},
+      eprint={2101.07296},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+</pre>
+
+<h1> Contact </h1>
+
+If you have any questions regarding the paper, please contact sstojanov at gatech dot edu.
+
+<h1> References </h1>
+<ol>
+    <li><a name="modelnet"> Wu, Zhirong, et al. "3d shapenets: A deep representation for volumetric shapes." in <cite> Proceedings of the IEEE conference on computer vision and pattern recognition. (2015).</a></li>
+    <li><a name="shapenet"> Chang, Angel X., et al. "Shapenet: An information-rich 3d model repository." <cite> arXiv:1512.03012 (2015). </a></li>
+    <li><a name="MCDI"> Fenson, Larry, et al. "Variability in early communicative development." in <cite> Monographs of the society for research in child development. (1994).  </a></li>
+    <li><a name="simpleshot"> Wang, Yan, et al. "Simpleshot: Revisiting nearest-neighbor classification for few-shot learning." <cite> arXiv:1911.04623 (2019).</a></li>
+    <li><a name="FEAT"> Ye, Han-Jia, et al. "Learning embedding adaptation for few-shot learning." in <cite> Proceedings of the IEEE conference on computer vision and pattern recognition. (2015).</a></li>
+</ol>
+
+</div>     
+
